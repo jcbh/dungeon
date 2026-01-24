@@ -1,12 +1,11 @@
 package deck;
 
-import java.util.Objects;
-
 public class Card {
 
 	String rank;
 	String suit;
 	String simbol;
+	int value;
 
 	public Card(String rank, String suit) {
 		this.rank = rank;
@@ -45,23 +44,21 @@ public class Card {
 		this.suit = suit;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(rank, simbol, suit);
+	public int getValue() {
+		return value;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Card other = (Card) obj;
-		return Objects.equals(rank, other.rank) && Objects.equals(simbol, other.simbol)
-				&& Objects.equals(suit, other.suit);
+	public void setValue(int value) {
+		this.value = value;
 	}
 
-	
+	public String getSimbol() {
+		return simbol;
+	}
+
+	public void setSimbol(String simbol) {
+		this.simbol = simbol;
+	}
+
+
 }

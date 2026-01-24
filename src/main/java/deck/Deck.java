@@ -11,7 +11,10 @@ public class Deck {
 		
 		for (Suit suit : Suit.values()) {
 			for (Value value : Value.values()) {
-				cards.add(new Card(value.toString(), suit.toString()));
+				Card actual=new Card(value.toString(), suit.toString());
+				actual.setValue(value.getNumber());
+				cards.add(actual);
+				
 			}
 		}
 	}

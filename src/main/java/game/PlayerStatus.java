@@ -3,18 +3,22 @@ package game;
 import java.util.ArrayList;
 import java.util.List;
 
+import deck.Card;
+
 public class PlayerStatus {
 
 	private int health;
 	private int weaponPower;
 	private int actualRound;
 	private List<Integer> scapes;
+	private List<Card> weaponStatus;
 	
 	public PlayerStatus() {
 		this.health = 20;
 		this.weaponPower = 0;
 		this.actualRound = 0;
 		this.scapes = new ArrayList<Integer>();
+		this.weaponStatus = new ArrayList<Card>();
 	}
 
 	public int getHealth() {
@@ -47,6 +51,14 @@ public class PlayerStatus {
 
 	public void setScapes(List<Integer> scapes) {
 		this.scapes = scapes;
+	}
+
+	public List<Card> getWeaponStatus() {
+		return weaponStatus;
+	}
+
+	public void setWeaponStatus(List<Card> weaponStatus) {
+		this.weaponStatus = weaponStatus;
 	}
 	
 	
