@@ -107,6 +107,10 @@ public class Game {
 	 *  d) goto next room
 	 */
 	private boolean escapeToNextRoom(List<Card> drawCards) {
+		if (playerStatus.getScapes().contains(playerStatus.getActualRound()-1)) {
+			System.out.println("You have scaped the previous room. You can't scape again.");
+			return true;
+		}
 		List<Card> drawCardsClone = new java.util.ArrayList<Card>(drawCards);
 		java.util.Collections.shuffle(drawCardsClone);
 		deck.getCards().addAll(drawCardsClone);
