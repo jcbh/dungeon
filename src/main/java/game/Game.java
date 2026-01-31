@@ -50,11 +50,15 @@ public class Game {
 					running = optionsForThreeCards(scanner, running, drawCards);
 				} else if (drawCards.size() == 2) {
 					running = optionsForTwoCards(scanner, running, drawCards);
-				} else if (drawCards.size() == 1) {
+				} else if (drawCards.size() == 1 || drawCards.size() == 0) {
 					//next room
-				} else {
+					System.out.println("Go to the next room");
+				} 
+				
+				if (deck.getCards().size() == 0) {
 					System.out.println("No more cards in the deck. You win!");
-					running = false;
+					//TODO check drawCard to check points
+					running = false;					
 				}
 			
 			}
@@ -83,6 +87,7 @@ public class Game {
 	            break;
 	        case "5":
 	            System.out.println("Scape to the next room");
+	            running = escapeToNextRoom(drawCards);
 	            break;
 	        case "6":
 	            running = false;
@@ -94,6 +99,22 @@ public class Game {
 	    return running;
 	}
 	
+	/*
+	 * Steps:
+	 * 	a) keep four cards in hand
+	 *  b) suffle then
+	 *  c) add to the end of the deck
+	 *  d) goto next room
+	 */
+	private boolean escapeToNextRoom(List<Card> drawCards) {
+		List<Card> drawCardsClone = new java.util.ArrayList<Card>(drawCards);
+		java.util.Collections.shuffle(drawCardsClone);
+		deck.getCards().addAll(drawCardsClone);
+		drawCards.clear();
+		playerStatus.getScapes().add(playerStatus.getActualRound());
+		return true;
+	}
+
 	private boolean optionsForThreeCards(Scanner scanner, boolean running, List<Card> drawCards) {
 	    System.out.println("\nWhat do you want to do?");
 	    System.out.println("1) Choose card number 1: "+drawCards.get(0));
