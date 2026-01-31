@@ -11,7 +11,7 @@ public class Deck {
 		
 		for (Suit suit : Suit.values()) {
 			for (Value value : Value.values()) {
-				Card actual=new Card(value.toString(), suit.toString());
+				Card actual=new Card(value.getDisplay(), suit.toString(), value.getNumber());
 				actual.setValue(value.getNumber());
 				cards.add(actual);
 				
@@ -32,18 +32,23 @@ public class Deck {
 	}
 	
 	public void removeDugeonCard() {
+		
+		System.out.println(cards.size());
+		
 		List<Card> cardsToRemove = List.of(
-			    new Card(Value.ONE.toString(), Suit.DIAMONDS.toString()),
-			    new Card(Value.ELEVEN.toString(), Suit.DIAMONDS.toString()),
-			    new Card(Value.TWELVE.toString(), Suit.DIAMONDS.toString()),
-			    new Card(Value.THIRTEEN.toString(), Suit.DIAMONDS.toString()),
-			    new Card(Value.ONE.toString(), Suit.HEARTS.toString()),
-			    new Card(Value.ELEVEN.toString(), Suit.HEARTS.toString()),
-			    new Card(Value.TWELVE.toString(), Suit.HEARTS.toString()),
-			    new Card(Value.THIRTEEN.toString(), Suit.HEARTS.toString())
+			    new Card(Value.ONE.toString(), Suit.DIAMONDS.toString(), Value.ONE.getNumber()),
+			    new Card(Value.ELEVEN.toString(), Suit.DIAMONDS.toString(), Value.ELEVEN.getNumber()),
+			    new Card(Value.TWELVE.toString(), Suit.DIAMONDS.toString(), Value.TWELVE.getNumber()),
+			    new Card(Value.THIRTEEN.toString(), Suit.DIAMONDS.toString(), Value.THIRTEEN.getNumber()),
+			    new Card(Value.ONE.toString(), Suit.HEARTS.toString(), Value.ONE.getNumber()),
+			    new Card(Value.ELEVEN.toString(), Suit.HEARTS.toString(), Value.ELEVEN.getNumber()),
+			    new Card(Value.TWELVE.toString(), Suit.HEARTS.toString(), Value.TWELVE.getNumber()),
+			    new Card(Value.THIRTEEN.toString(), Suit.HEARTS.toString(), Value.THIRTEEN.getNumber())
 			);
 
 		cards.removeAll(cardsToRemove);
+		
+		System.out.println(cards.size());
 	}
 	
 	public Deck generateDungeonDeck() {

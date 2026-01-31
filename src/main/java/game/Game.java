@@ -27,17 +27,17 @@ public class Game {
 		while (running) {
 			
 			playerStatus.setActualRound(playerStatus.getActualRound() + 1);
+			playerStatus.setAddWeaponOnThisRound(false);
+			playerStatus.setHealthPotionOnThisRound(false);
 			
 			System.out.println("");
 			System.out.println(deck.getCards().size() + " cards remaining in the deck.");
 			
 			System.out.println("You are in the room number " + (playerStatus.getActualRound()));
-
-
 			
 			List<Card> drawCards = deck.drawCards(4);
 			
-			while (drawCards.size() > 1) {			
+			while (drawCards.size() > 1 && running) {	
 				System.out.println("In that stance you can see: " + drawCards);
 				if (playerStatus.getWeaponPower() > 0){
 					System.out.println("Your weapon power is " + playerStatus.getWeaponPower());
@@ -63,10 +63,10 @@ public class Game {
 
 	private boolean optionsForFourCards(Scanner scanner, boolean running, List<Card> drawCards) {
 	    System.out.println("\nWhat do you want to do?");
-	    System.out.println("1) Choose card number 1");
-	    System.out.println("2) Choose card number 2");
-	    System.out.println("3) Choose card number 3");
-	    System.out.println("4) Choose card number 4");
+	    System.out.println("1) Choose card number 1: "+drawCards.get(0));
+	    System.out.println("2) Choose card number 2: "+drawCards.get(1));
+	    System.out.println("3) Choose card number 3: "+drawCards.get(2));
+	    System.out.println("4) Choose card number 4: "+drawCards.get(3));
 	    System.out.println("5) Scape to the next room");
 	    System.out.println("6) Exit");
 
@@ -96,9 +96,9 @@ public class Game {
 	
 	private boolean optionsForThreeCards(Scanner scanner, boolean running, List<Card> drawCards) {
 	    System.out.println("\nWhat do you want to do?");
-	    System.out.println("1) Choose card number 1");
-	    System.out.println("2) Choose card number 2");
-	    System.out.println("3) Choose card number 3");
+	    System.out.println("1) Choose card number 1: "+drawCards.get(0));
+	    System.out.println("2) Choose card number 2: "+drawCards.get(1));
+	    System.out.println("3) Choose card number 3: "+drawCards.get(2));
 	    System.out.println("4) Exit");
 
 	    System.out.print("Choose an option: ");
@@ -123,8 +123,8 @@ public class Game {
 	
 	private boolean optionsForTwoCards(Scanner scanner, boolean running, List<Card> drawCards) {
 	    System.out.println("\nWhat do you want to do?");
-	    System.out.println("1) Choose card number 1");
-	    System.out.println("2) Choose card number 2");
+	    System.out.println("1) Choose card number 1: "+drawCards.get(0));
+	    System.out.println("2) Choose card number 2: "+drawCards.get(1));
 	    System.out.println("3) Exit");
 
 	    System.out.print("Choose an option: ");
@@ -170,13 +170,20 @@ public class Game {
 			
 			System.out.println("It's a monster of level "+initialMonsterLife+". Prepare to fight!");
 			
-			if (playerStatus.getWeaponPower() == 0) {
-				System.out.println("You only can use your hands (lose health points) to fight");
+			boolean canUseWeapon = false;
+			if (playerStatus.getWeaponStatus().size() == 1) {
+				canUseWeapon=true;
+			}else {
+				canUseWeapon = playerStatus.getWeaponStatus().getLast().getValue() >= initialMonsterLife;
+			}	
 			
+			if (playerStatus.getWeaponPower() == 0 ) {
+				System.out.println("You only can use your hands (lose health points) to fight");
 				actualMonsterLife = combatWithHands(initialMonsterLife);
-				
-				
-			} else {
+			} else if (canUseWeapon == false) {
+				System.out.println("Your weapon can't attack this monster. You only can use your hands (lose health points) to fight");
+				actualMonsterLife = combatWithHands(initialMonsterLife);
+			}else {
 				System.out.println("1) You can use your hands (lose health points) to fight");
 				System.out.println("2) You can use your weapon power ("+playerStatus.getWeaponPower()+") to fight");
 				
@@ -209,17 +216,28 @@ public class Game {
 				return 1;
 			} 
 		} else if (card.getSuit().equals(Suit.DIAMONDS.toString())) {
-			// It's a health potion
-			int weaponPower = card.getValue();
-			playerStatus.setWeaponPower(weaponPower);
-			playerStatus.getWeaponStatus().add(card);
+			// It's a weapon
+			if (playerStatus.isAddWeaponOnThisRound()==false) {
+				int weaponPower = card.getValue();
+				playerStatus.setWeaponPower(weaponPower);
+				playerStatus.setWeaponStatus(new java.util.ArrayList<Card>());
+				playerStatus.getWeaponStatus().add(card);
+				playerStatus.setAddWeaponOnThisRound(true);
+			} else {
+				System.out.println("You have already added a weapon this round. You can't add another one.");
+			}			
 			return 1;
 			
 		} else if (card.getSuit().equals(Suit.HEARTS.toString())) {
 			// It's a health potion
-			int healthPoints = card.getValue();
-			playerStatus.setHealth(playerStatus.getHealth() + healthPoints);
-			System.out.println("It's a health potion! You gain " + healthPoints + " health points.");
+			if (playerStatus.isHealthPotionOnThisRound()==false) {			
+				int healthPoints = card.getValue();
+				playerStatus.setHealth(playerStatus.getHealth() + healthPoints);
+				playerStatus.setHealthPotionOnThisRound(true);
+				System.out.println("It's a health potion! You gain " + healthPoints + " health points.");
+			} else {
+				System.out.println("You have already used a health potion this round. You can't use another one.");
+			}
 			return 1;
 		}
 		return 1;

@@ -12,6 +12,8 @@ public class PlayerStatus {
 	private int actualRound;
 	private List<Integer> scapes;
 	private List<Card> weaponStatus;
+	private boolean healthPotionOnThisRound;
+	private boolean addWeaponOnThisRound;
 	
 	public PlayerStatus() {
 		this.health = 20;
@@ -19,6 +21,8 @@ public class PlayerStatus {
 		this.actualRound = 0;
 		this.scapes = new ArrayList<Integer>();
 		this.weaponStatus = new ArrayList<Card>();
+		healthPotionOnThisRound=false;
+		addWeaponOnThisRound=false;
 	}
 
 	public int getHealth() {
@@ -59,6 +63,22 @@ public class PlayerStatus {
 
 	public void setWeaponStatus(List<Card> weaponStatus) {
 		this.weaponStatus = weaponStatus;
+	}
+
+	public boolean isHealthPotionOnThisRound() {
+		return healthPotionOnThisRound;
+	}
+
+	public void setHealthPotionOnThisRound(boolean healthPotionOnThisRound) {
+		this.healthPotionOnThisRound = healthPotionOnThisRound;
+	}
+
+	public boolean isAddWeaponOnThisRound() {
+		return addWeaponOnThisRound;
+	}
+
+	public void setAddWeaponOnThisRound(boolean addWeaponOnThisRound) {
+		this.addWeaponOnThisRound = addWeaponOnThisRound;
 	}
 	
 	
